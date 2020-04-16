@@ -27,7 +27,9 @@ function DelAllFileInOrder ([string]$targetFolder) {
 }
 
 DelAllFileInOrder $TargetZipFilePrefix
+PackageAllFile $ServiceFilesPrefix"AdlsMetadataCacher"$ServiceFilesSuffix $TargetZipFilePrefix"AdlsMetadataCacher"$TargetZipFileSuffix
 PackageAllFile $ServiceFilesPrefix"AdlsWorker"$ServiceFilesSuffix $TargetZipFilePrefix"AdlsWorker"$TargetZipFileSuffix
 PackageAllFile $ServiceFilesPrefix"CosmosWorker"$ServiceFilesSuffix $TargetZipFilePrefix"CosmosWorker"$TargetZipFileSuffix
 PackageAllFile $ServiceFilesPrefix"OndemandDataCopService"$ServiceFilesSuffix $TargetZipFilePrefix"OndemandDataCopService"$TargetZipFileSuffix
 PackageAllFile $ServiceFilesPrefix"Orchestrator"$ServiceFilesSuffix $TargetZipFilePrefix"Orchestrator"$TargetZipFileSuffix
+PackageAllFile $ServiceFilesPrefix"DataCopIcMAlertSync"$ServiceFilesSuffix $TargetZipFilePrefix"DataCopIcMAlertSync"$TargetZipFileSuffix
