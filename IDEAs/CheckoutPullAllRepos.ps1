@@ -7,7 +7,7 @@ param(
 )
 
 ### BEGIN FUNCTIONS ####################################################
-$Repos = get-childitem $RootFolder -force
+$Repos = get-childitem $RootFolder -Directory
 cd $RootFolder
 Foreach ($Repo in $Repos)
 {
