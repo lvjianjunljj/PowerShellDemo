@@ -7,8 +7,8 @@ param(
     [int]$processCount = 2,
     [string]$BuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
     [string]$RepoFolder = "D:\IDEAs\repos\Ibiza\",
-    [string]$ReleaseFolder = "D:\IDEAs\repos\Ibiza\Source\Services\DataCop\CosmosWorker\bin\Release\",
-    [string]$CsprojFilePath = "D:\IDEAs\repos\Ibiza\Source\Services\DataCop\CosmosWorker\CosmosWorker.csproj",
+    [string]$ReleaseFolderRelativePath = "Source\Services\DataCop\CosmosWorker\bin\Release\",
+    [string]$CsprojFileRelativePath = "Source\Services\DataCop\CosmosWorker\CosmosWorker.csproj",
     [string]$WorkerFolderPrefix = "D:\test_",
     [string]$AppId = "",
     [string]$AppKey = ""
@@ -17,13 +17,13 @@ param(
 set-alias MSBuild $BuildPath
 Push-Location $RepoFolder
 git pull
-MSBuild $CsprojFilePath -t:rebuild /p:Configuration=Release
+MSBuild $RepoFolder$CsprojFileRelativePath -t:rebuild /p:Configuration=Release
 
 for ($index = 0; $index -lt $processCount; $index++)
 {
     $WorkerFolder = "$WorkerFolderPrefix$index"
-    Remove-Item $WorkerFolder -Confirm:$false
+    Remove-Item $WorkerFolder -Recurse -Force -Confirm:$false
     Mkdir $WorkerFolder
-    Copy-Item -Path $ReleaseFolder"*" -Destination $WorkerFolder -Recurse
+    Copy-Item -Path $RepoFolder$ReleaseFolderRelativePath"*" -Destination $WorkerFolder -Recurse
     Start-Process -FilePath $WorkerFolder"\CosmosWorker.exe" -ArgumentList "--appid $AppId --appkey $AppKey"
 }
