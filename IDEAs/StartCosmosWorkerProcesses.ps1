@@ -1,7 +1,6 @@
-### Stop all the cosmos worker processes before starting this power shell script
 <#
 .SYNOPSIS
-    Package the IDEAs project build reuslt by power shell.
+    Start multi CMD processes to run Cosmos Worker.
 #>
 param(
     [int]$processCount = 2,
@@ -14,6 +13,9 @@ param(
     [string]$AppKey = ""
 )
 
+### Stop all the cosmos worker processes at first
+Stop-Process -Name CosmosWorker -Force -Confirm:$false
+
 set-alias MSBuild $BuildPath
 Push-Location $RepoFolder
 git pull
@@ -25,5 +27,5 @@ for ($index = 0; $index -lt $processCount; $index++)
     Remove-Item $WorkerFolder -Recurse -Force -Confirm:$false
     Mkdir $WorkerFolder
     Copy-Item -Path $RepoFolder$ReleaseFolderRelativePath"*" -Destination $WorkerFolder -Recurse
-    Start-Process -FilePath $WorkerFolder"\CosmosWorker.exe" -ArgumentList "--appid $AppId --appkey $AppKey"
+    Start-Process -FilePath $WorkerFolder"\CosmosWorker.exe" -ArgumentList "--appid $AppId --appkey $AppKey" -WorkingDirectory $WorkerFolder
 }
